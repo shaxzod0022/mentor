@@ -69,23 +69,6 @@ export default function AdminSidebar({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* User Info */}
-        <div className="p-6 border-b border-slate-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 font-bold">
-              {user?.firstName?.[0]}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-slate-900 truncate">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-0.5">
-                {user?.role?.replace('_', ' ')}
-              </p>
-            </div>
-          </div>
-        </div>
-
         <nav className="py-8 px-4 space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import authService from '@/services/auth.service';
-import notificationRepository from '@/repositories/notification.repository';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import authService from "@/services/auth.service";
+import notificationRepository from "@/repositories/notification.repository";
 
 const SocketContext = createContext();
 
@@ -29,17 +29,17 @@ export const SocketProvider = ({ children }) => {
     };
     fetchInitialData();
 
-    const newSocket = io('http://localhost:8080'); // Adjust for production
+    const newSocket = io("https://mentor-back-production.up.railway.app"); // Adjust for production
     setSocket(newSocket);
 
-    newSocket.on('connect', () => {
-      console.log('Connected to socket server');
-      newSocket.emit('authenticate', user._id);
+    newSocket.on("connect", () => {
+      console.log("Connected to socket server");
+      newSocket.emit("authenticate", user._id);
     });
 
-    newSocket.on('NOTIFICATION_RECEIVED', (notification) => {
-      setNotifications(prev => [notification, ...prev]);
-      setUnreadCount(prev => prev + 1);
+    newSocket.on("NOTIFICATION_RECEIVED", (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+      setUnreadCount((prev) => prev + 1);
     });
 
     return () => newSocket.close();
@@ -48,8 +48,8 @@ export const SocketProvider = ({ children }) => {
   const markAsRead = async (id) => {
     try {
       await notificationRepository.markAsRead(id);
-      setNotifications(prev => prev.filter(n => n._id !== id));
-      setUnreadCount(prev => Math.max(0, prev - 1));
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (err) {
       console.error(err);
     }
@@ -66,7 +66,17 @@ export const SocketProvider = ({ children }) => {
   };
 
   return (
-    <SocketContext.Provider value={{ socket, notifications, setNotifications, unreadCount, setUnreadCount, markAsRead, markAllRead }}>
+    <SocketContext.Provider
+      value={{
+        socket,
+        notifications,
+        setNotifications,
+        unreadCount,
+        setUnreadCount,
+        markAsRead,
+        markAllRead,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );
