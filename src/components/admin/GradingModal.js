@@ -93,7 +93,7 @@ export default function GradingModal({
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold text-slate-500">Fayl</span>
               <a
-                href={`http://localhost:8080${submission.submissionUrl}`}
+                href={`https://mentor-back-production.up.railway.app${submission.submissionUrl}`}
                 target="_blank"
                 className="text-xs font-black text-indigo-600 flex items-center gap-1 hover:underline"
               >

@@ -171,7 +171,11 @@ export default function CourseDetailsPage() {
       setDeletingSubmission(null);
       setTimeout(() => setSuccessMessage(""), 5000);
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || err.message || "O'chirishda xatolik yuz berdi");
+      setErrorMessage(
+        err.response?.data?.message ||
+          err.message ||
+          "O'chirishda xatolik yuz berdi",
+      );
     } finally {
       setActionLoading(false);
     }
@@ -204,7 +208,7 @@ export default function CourseDetailsPage() {
         : "O'quvchilar";
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") ||
-    "http://localhost:8080";
+    "https://mentor-back-production.up.railway.app";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -416,10 +420,20 @@ export default function CourseDetailsPage() {
                               {material.description || "Izoh qoldirilmagan"}
                             </p>
                             {material.deadline && (
-                                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 w-fit px-2 py-1 rounded-md mt-2">
-                                  <Calendar size={12} />
-                                  Qabul muddati: {new Date(material.deadline).toLocaleString('uz-UZ', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                                </div>
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 w-fit px-2 py-1 rounded-md mt-2">
+                                <Calendar size={12} />
+                                Qabul muddati:{" "}
+                                {new Date(material.deadline).toLocaleString(
+                                  "uz-UZ",
+                                  {
+                                    year: "numeric",
+                                    month: "numeric",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  },
+                                )}
+                              </div>
                             )}
                           </div>
 
@@ -518,7 +532,7 @@ export default function CourseDetailsPage() {
 
                             <div className="flex items-center gap-1">
                               <a
-                                href={`http://localhost:8080${sub.submissionUrl}`}
+                                href={`https://mentor-back-production.up.railway.app${sub.submissionUrl}`}
                                 target="_blank"
                                 className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                                 title="PDFni ko'rish"

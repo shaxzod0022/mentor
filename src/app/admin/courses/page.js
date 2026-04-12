@@ -44,7 +44,7 @@ export default function CoursesPage() {
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
     ? process.env.NEXT_PUBLIC_API_URL.replace("/api", "")
-    : "http://localhost:8080";
+    : "https://mentor-back-production.up.railway.app";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">

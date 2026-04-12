@@ -35,7 +35,7 @@ export default function EditCourseModal({
       setPreviewUrl(
         process.env.NEXT_PUBLIC_API_URL
           ? `${process.env.NEXT_PUBLIC_API_URL.replace("/api", "")}${course.image}`
-          : `http://localhost:8080${course.image}`,
+          : `https://mentor-back-production.up.railway.app${course.image}`,
       );
     }
   }, [course, isOpen]);

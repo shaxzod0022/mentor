@@ -116,7 +116,7 @@ export default function StudentCourses() {
                 <img
                   src={
                     course.image
-                      ? `http://localhost:8080${course.image}`
+                      ? `https://mentor-back-production.up.railway.app${course.image}`
                       : "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
                   }
                   alt={course.name}
@@ -183,7 +183,7 @@ export default function StudentCourses() {
                 <img
                   src={
                     course.image
-                      ? `http://localhost:8080${course.image}`
+                      ? `https://mentor-back-production.up.railway.app${course.image}`
                       : "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
                   }
                   alt={course.name}

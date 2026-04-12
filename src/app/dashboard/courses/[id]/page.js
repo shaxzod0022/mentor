@@ -167,7 +167,7 @@ export default function StudentCourseDetails() {
                           <div className="flex flex-wrap items-center gap-3">
                             {material.pdfUrl && (
                               <a
-                                href={`http://localhost:8080${material.pdfUrl}`}
+                                href={`https://mentor-back-production.up.railway.app${material.pdfUrl}`}
                                 target="_blank"
                                 className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"
                               >
