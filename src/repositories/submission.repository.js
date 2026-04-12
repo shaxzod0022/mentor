@@ -30,6 +30,11 @@ const submissionRepository = {
     const response = await api.patch(`/submissions/${id}/grade`, gradeData);
     return response.data;
   },
+
+  delete: async (id) => {
+    const response = await api.delete(`/submissions/${id}`);
+    return response.data;
+  },
 };
 
 export default submissionRepository;

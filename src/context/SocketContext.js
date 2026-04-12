@@ -29,7 +29,7 @@ export const SocketProvider = ({ children }) => {
     };
     fetchInitialData();
 
-    const newSocket = io("https://mentor-back-production.up.railway.app"); // Adjust for production
+    const newSocket = io("http://localhost:8080"); // Adjust for production
     setSocket(newSocket);
 
     newSocket.on("connect", () => {

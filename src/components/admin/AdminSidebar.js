@@ -29,7 +29,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
-    ...(role === 'super_admin' || role === 'admin' || role === 'teacher' ? [
+    ...(role === 'owner' || role === 'super_admin' || role === 'admin' || role === 'teacher' ? [
       { id: 'users', label: 'Foydalanuvchilar', icon: Users, path: '/admin/users' }
     ] : []),
     { id: 'courses', label: 'Kurslar', icon: GraduationCap, path: '/admin/courses' },

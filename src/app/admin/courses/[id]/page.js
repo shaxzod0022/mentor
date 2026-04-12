@@ -18,10 +18,11 @@ import {
   ExternalLink,
   Edit,
   History,
-  Eye,
   CheckCircle,
   Clock,
   MessageSquare,
+  Calendar,
+  Eye,
 } from "lucide-react";
 import courseService from "@/services/course.service";
 import materialService from "@/services/material.service";
@@ -29,6 +30,7 @@ import submissionRepository from "@/repositories/submission.repository";
 import AssignUsersModal from "@/components/admin/courses/AssignUsersModal";
 import AddMaterialModal from "@/components/admin/courses/AddMaterialModal";
 import DeleteMaterialModal from "@/components/admin/courses/DeleteMaterialModal";
+import DeleteSubmissionModal from "@/components/admin/courses/DeleteSubmissionModal";
 import GradingModal from "@/components/admin/GradingModal";
 import authService from "@/services/auth.service";
 
@@ -43,6 +45,7 @@ export default function CourseDetailsPage() {
   const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState(null);
   const [deletingMaterial, setDeletingMaterial] = useState(null);
+  const [deletingSubmission, setDeletingSubmission] = useState(null);
   const user = authService.getCurrentUser();
   const isTeacher = user?.role === "teacher";
   const isMentor = user?.role === "mentor";
@@ -155,6 +158,25 @@ export default function CourseDetailsPage() {
     }
   };
 
+  const handleDeleteSubmission = (submission) => {
+    setDeletingSubmission(submission);
+  };
+
+  const confirmDeleteSubmission = async () => {
+    try {
+      setActionLoading(true);
+      await submissionRepository.delete(deletingSubmission._id);
+      setSuccessMessage("Vazifa muvaffaqiyatli o'chirildi");
+      fetchSubmissions();
+      setDeletingSubmission(null);
+      setTimeout(() => setSuccessMessage(""), 5000);
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || err.message || "O'chirishda xatolik yuz berdi");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   if (loading)
     return (
       <div className="p-20 text-center text-slate-400 font-medium">
@@ -182,7 +204,7 @@ export default function CourseDetailsPage() {
         : "O'quvchilar";
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") ||
-    "https://mentor-back-production.up.railway.app";
+    "http://localhost:8080";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -393,6 +415,12 @@ export default function CourseDetailsPage() {
                             <p className="text-sm text-slate-500 font-medium">
                               {material.description || "Izoh qoldirilmagan"}
                             </p>
+                            {material.deadline && (
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 w-fit px-2 py-1 rounded-md mt-2">
+                                  <Calendar size={12} />
+                                  Qabul muddati: {new Date(material.deadline).toLocaleString('uz-UZ', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                            )}
                           </div>
 
                           <div className="flex items-center gap-2">
@@ -490,7 +518,7 @@ export default function CourseDetailsPage() {
 
                             <div className="flex items-center gap-1">
                               <a
-                                href={`https://mentor-back-production.up.railway.app${sub.submissionUrl}`}
+                                href={`http://localhost:8080${sub.submissionUrl}`}
                                 target="_blank"
                                 className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                                 title="PDFni ko'rish"
@@ -501,7 +529,8 @@ export default function CourseDetailsPage() {
                               {/* Mentor review action */}
                               {(user.role === "mentor" ||
                                 user.role === "admin" ||
-                                user.role === "super_admin") && (
+                                user.role === "super_admin" ||
+                                user.role === "owner") && (
                                 <button
                                   onClick={() => handleToggleGrading(sub._id)}
                                   disabled={actionLoading}
@@ -519,7 +548,8 @@ export default function CourseDetailsPage() {
                               {/* Grading action for higher roles */}
                               {(user.role === "teacher" ||
                                 user.role === "admin" ||
-                                user.role === "super_admin") && (
+                                user.role === "super_admin" ||
+                                user.role === "owner") && (
                                 <button
                                   onClick={() => {
                                     if (
@@ -545,6 +575,21 @@ export default function CourseDetailsPage() {
                                   }
                                 >
                                   <Edit size={18} />
+                                </button>
+                              )}
+
+                              {/* Delete action for higher roles */}
+                              {(user.role === "teacher" ||
+                                user.role === "admin" ||
+                                user.role === "super_admin" ||
+                                user.role === "owner") && (
+                                <button
+                                  onClick={() => handleDeleteSubmission(sub)}
+                                  disabled={actionLoading}
+                                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                                  title="Vazifani o'chirish"
+                                >
+                                  <Trash2 size={18} />
                                 </button>
                               )}
                             </div>
@@ -633,6 +678,14 @@ export default function CourseDetailsPage() {
         loading={actionLoading}
         onClose={() => setDeletingMaterial(null)}
         onConfirm={confirmDeleteMaterial}
+      />
+
+      <DeleteSubmissionModal
+        isOpen={!!deletingSubmission}
+        studentName={`${deletingSubmission?.student?.firstName} ${deletingSubmission?.student?.lastName}`}
+        loading={actionLoading}
+        onClose={() => setDeletingSubmission(null)}
+        onConfirm={confirmDeleteSubmission}
       />
 
       <GradingModal

@@ -14,7 +14,7 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     const user = authService.getCurrentUser();
-    if (!user || (user.role !== 'super_admin' && user.role !== 'admin' && user.role !== 'teacher' && user.role !== 'mentor')) {
+    if (!user || (!['owner', 'super_admin', 'admin', 'teacher', 'mentor'].includes(user.role))) {
       router.push('/login');
     } else {
       setAuthorized(true);

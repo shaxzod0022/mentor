@@ -21,12 +21,14 @@ import { useUsers } from "@/hooks/useUsers";
 
 const tabs = [
   { id: "all", label: "Hamma" },
+  { id: "admin", label: "Adminlar" },
   { id: "teacher", label: "Ustozlar" },
   { id: "mentor", label: "Mentorlar" },
   { id: "student", label: "O'quvchilar" },
 ];
 
 const roleIcons = {
+  owner: { icon: Shield, color: "text-amber-600", bg: "bg-amber-100" },
   super_admin: { icon: Shield, color: "text-rose-600", bg: "bg-rose-50" },
   admin: { icon: Shield, color: "text-blue-600", bg: "bg-blue-50" },
   teacher: {
@@ -68,7 +70,7 @@ export default function UsersPage() {
 
   const userTabs = [
     { id: "all", label: "Hamma" },
-    ...(currentUser?.role === 'super_admin' || currentUser?.role === 'admin' 
+    ...(currentUser?.role === 'owner' || currentUser?.role === 'super_admin' || currentUser?.role === 'admin' 
       ? [{ id: "admin", label: "Adminlar" }] 
       : []),
     { id: "teacher", label: "Ustozlar" },

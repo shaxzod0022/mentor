@@ -10,6 +10,7 @@ export default function AddMaterialModal({ isOpen, onClose, onSuccess, courseId,
     description: '',
     videoUrl: '',
     pdf: null,
+    deadline: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,6 +22,7 @@ export default function AddMaterialModal({ isOpen, onClose, onSuccess, courseId,
         description: material.description || '',
         videoUrl: material.videoUrl || '',
         pdf: null,
+        deadline: material.deadline ? new Date(material.deadline).toISOString().slice(0, 16) : '',
       });
     } else {
       setFormData({
@@ -28,6 +30,7 @@ export default function AddMaterialModal({ isOpen, onClose, onSuccess, courseId,
         description: '',
         videoUrl: '',
         pdf: null,
+        deadline: '',
       });
     }
   }, [material, isOpen]);
@@ -121,6 +124,17 @@ export default function AddMaterialModal({ isOpen, onClose, onSuccess, courseId,
               className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3 px-4 outline-none focus:ring-2 focus:ring-indigo-500/10 focus:bg-white focus:border-indigo-500 transition-all text-sm font-medium resize-none"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Topshirish muddati (Deadline)</label>
+            <input
+              type="datetime-local"
+              required
+              className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3 px-4 outline-none focus:ring-2 focus:ring-indigo-500/10 focus:bg-white focus:border-indigo-500 transition-all text-sm font-medium"
+              value={formData.deadline}
+              onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
             />
           </div>
 

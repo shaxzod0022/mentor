@@ -58,11 +58,11 @@ export default function AdminDashboard() {
       icon: FileText,
       color: "amber",
     },
-    ...(user?.role === "super_admin" || user?.role === "admin"
+    ...(user?.role === "owner" || user?.role === "super_admin" || user?.role === "admin"
       ? [
           {
-            label: user?.role === "super_admin" ? "Adminlar" : "Moderatorlar",
-            value: stats ? stats.admin + (stats.super_admin || 0) : 0,
+            label: (user?.role === "owner" || user?.role === "super_admin") ? "Boshqaruvchilar" : "Moderatorlar",
+            value: stats ? (stats.admin || 0) + (stats.super_admin || 0) + (stats.owner || 0) : 0,
             icon: ShieldCheck,
             color: "rose",
           },

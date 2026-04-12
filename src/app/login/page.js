@@ -22,7 +22,7 @@ export default function LoginPage() {
       );
 
       const actualRole = data.user.role;
-      const isAdminRole = actualRole === "super_admin" || actualRole === "admin";
+      const isAdminRole = actualRole === "owner" || actualRole === "super_admin" || actualRole === "admin";
 
       // Logic:
       // 1. Admin/Super Admin can log in via any portal (including none)

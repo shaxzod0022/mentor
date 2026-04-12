@@ -6,6 +6,7 @@ import api from '@/services/api';
 import authService from '@/services/auth.service';
 
 const ROLES = {
+  OWNER: 'owner',
   SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
   TEACHER: 'teacher',
@@ -40,7 +41,9 @@ export default function EditUserModal({ isOpen, onClose, onSuccess, user }) {
 
     const currentUser = authService.getCurrentUser();
     if (currentUser) {
-      if (currentUser.role === ROLES.SUPER_ADMIN) {
+      if (currentUser.role === ROLES.OWNER) {
+        setAvailableRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);
+      } else if (currentUser.role === ROLES.SUPER_ADMIN) {
         setAvailableRoles([ROLES.ADMIN, ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);
       } else if (currentUser.role === ROLES.ADMIN) {
         setAvailableRoles([ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);

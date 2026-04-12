@@ -6,6 +6,7 @@ import api from '@/services/api';
 import authService from '@/services/auth.service';
 
 const ROLES = {
+  OWNER: 'owner',
   SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
   TEACHER: 'teacher',
@@ -28,7 +29,9 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
   useEffect(() => {
     const currentUser = authService.getCurrentUser();
     if (currentUser) {
-      if (currentUser.role === ROLES.SUPER_ADMIN) {
+      if (currentUser.role === ROLES.OWNER) {
+        setAvailableRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);
+      } else if (currentUser.role === ROLES.SUPER_ADMIN) {
         setAvailableRoles([ROLES.ADMIN, ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);
       } else if (currentUser.role === ROLES.ADMIN) {
         setAvailableRoles([ROLES.TEACHER, ROLES.MENTOR, ROLES.STUDENT]);
@@ -64,7 +67,7 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-60 flex items-center justify-center p-4 sm:p-6">
       <div 
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300"
         onClick={onClose}

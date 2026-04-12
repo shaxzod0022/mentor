@@ -11,6 +11,7 @@ const createMaterial = async (materialData) => {
   formData.append('courseId', materialData.courseId);
   if (materialData.description) formData.append('description', materialData.description);
   if (materialData.videoUrl) formData.append('videoUrl', materialData.videoUrl);
+  if (materialData.deadline) formData.append('deadline', materialData.deadline);
   if (materialData.pdf) formData.append('pdf', materialData.pdf);
 
   const response = await api.post('/materials', formData, {
@@ -26,6 +27,7 @@ const updateMaterial = async (id, materialData) => {
   if (materialData.name) formData.append('name', materialData.name);
   if (materialData.description) formData.append('description', materialData.description);
   if (materialData.videoUrl) formData.append('videoUrl', materialData.videoUrl);
+  if (materialData.deadline) formData.append('deadline', materialData.deadline);
   if (materialData.pdf) formData.append('pdf', materialData.pdf);
 
   const response = await api.put(`/materials/${id}`, formData, {

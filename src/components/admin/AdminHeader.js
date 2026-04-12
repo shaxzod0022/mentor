@@ -3,12 +3,10 @@
 import React, { useEffect, useState } from "react";
 import {
   Bell,
-  Search,
   Menu,
   User,
   Clock,
   CheckCircle2,
-  Trash2,
   ExternalLink,
 } from "lucide-react";
 import authService from "@/services/auth.service";
@@ -142,7 +140,7 @@ export default function AdminHeader({ onMenuClick }) {
 
         <div className="h-8 w-px bg-slate-200 mx-1 hidden sm:block" />
 
-        <div className="flex items-center gap-3 pl-2">
+        <Link href={"/admin/profile"} className="flex items-center gap-3 pl-2">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-bold text-slate-900">
               {user?.firstName} {user?.lastName}
@@ -154,7 +152,7 @@ export default function AdminHeader({ onMenuClick }) {
           <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-sm">
             <User size={20} />
           </div>
-        </div>
+        </Link>
       </div>
     </header>
   );

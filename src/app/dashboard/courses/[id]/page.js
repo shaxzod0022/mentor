@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Video,
   Upload,
+  XCircle,
 } from "lucide-react";
 import Link from "next/link";
 import courseService from "@/services/course.service";
@@ -144,11 +145,29 @@ export default function StudentCourseDetails() {
                           <p className="text-xs text-slate-500 line-clamp-1 mb-2">
                             {material.description}
                           </p>
+                          {material.deadline && (
+                            <div
+                              className={`flex items-center gap-1.5 text-xs font-bold w-fit px-2 py-1 rounded-md mb-3 ${new Date() > new Date(material.deadline) ? "text-rose-600 bg-rose-50" : "text-amber-600 bg-amber-50"}`}
+                            >
+                              <Calendar size={12} />
+                              Qabul muddati:{" "}
+                              {new Date(material.deadline).toLocaleString(
+                                "uz-UZ",
+                                {
+                                  year: "numeric",
+                                  month: "numeric",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                },
+                              )}
+                            </div>
+                          )}
 
                           <div className="flex flex-wrap items-center gap-3">
                             {material.pdfUrl && (
                               <a
-                                href={`https://mentor-back-production.up.railway.app${material.pdfUrl}`}
+                                href={`http://localhost:8080${material.pdfUrl}`}
                                 target="_blank"
                                 className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"
                               >
@@ -185,16 +204,27 @@ export default function StudentCourseDetails() {
                           {status.label}
                         </div>
 
-                        <button
-                          onClick={() => {
-                            setSelectedMaterial(material);
-                            setIsModalOpen(true);
-                          }}
-                          className="p-3 bg-white text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 rounded-xl transition-all shadow-sm"
-                          title="Vazifa topshirish"
-                        >
-                          <Upload size={20} />
-                        </button>
+                        {material.deadline &&
+                        new Date() > new Date(material.deadline) ? (
+                          <button
+                            disabled
+                            className="p-3 bg-rose-50 text-rose-400 border border-transparent rounded-xl cursor-not-allowed shadow-none"
+                            title="Muddat o'tib ketgan"
+                          >
+                            <XCircle size={20} />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setSelectedMaterial(material);
+                              setIsModalOpen(true);
+                            }}
+                            className="p-3 bg-white text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-100 rounded-xl transition-all shadow-sm"
+                            title="Vazifa topshirish"
+                          >
+                            <Upload size={20} />
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
