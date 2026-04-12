@@ -222,21 +222,6 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
-
-        {/* Info Card */}
-        <div className="space-y-6">
-          <div className="bg-indigo-600 rounded-4xl p-8 text-white relative overflow-hidden group shadow-xl shadow-indigo-100">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-150 transition-transform duration-700" />
-            <h3 className="text-xl font-bold mb-2">Platforma Yangilanishi</h3>
-            <p className="text-indigo-100 text-sm leading-relaxed mb-6">
-              Yangi mentorlik modullari qo'shildi. To'liq hisobotni yuklab
-              oling.
-            </p>
-            <button className="bg-white text-indigo-600 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all">
-              Ko'rish
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
