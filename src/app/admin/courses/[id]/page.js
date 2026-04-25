@@ -158,6 +158,20 @@ export default function CourseDetailsPage() {
     }
   };
 
+  const handleRejectSubmission = async (subId) => {
+    try {
+      setActionLoading(true);
+      await submissionRepository.rejectSubmission(subId);
+      setSuccessMessage("Vazifa yaroqsiz deb belgilandi");
+      fetchSubmissions();
+      setTimeout(() => setSuccessMessage(""), 5000);
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || "Xatolik yuz berdi");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleDeleteSubmission = (submission) => {
     setDeletingSubmission(submission);
   };
@@ -520,14 +534,18 @@ export default function CourseDetailsPage() {
                                       ? "bg-emerald-50 text-emerald-600"
                                       : sub.status === "reviewed"
                                         ? "bg-indigo-50 text-indigo-600"
-                                        : "bg-amber-50 text-amber-600"
+                                        : sub.status === "rejected"
+                                          ? "bg-rose-50 text-rose-600"
+                                          : "bg-amber-50 text-amber-600"
                                   }`}
                             >
                               {sub.status === "graded"
                                 ? `Baholangan: ${sub.grade}`
                                 : sub.status === "reviewed"
                                   ? "Ko'rib chiqildi"
-                                  : "Kutilmoqda"}
+                                  : sub.status === "rejected"
+                                    ? "Yaroqsiz"
+                                    : "Kutilmoqda"}
                             </div>
 
                             <div className="flex items-center gap-1">
@@ -540,23 +558,44 @@ export default function CourseDetailsPage() {
                                 <Eye size={18} />
                               </a>
 
-                              {/* Mentor review action */}
+                              {/* Mentor actions */}
                               {(user.role === "mentor" ||
                                 user.role === "admin" ||
                                 user.role === "super_admin" ||
                                 user.role === "owner") && (
-                                <button
-                                  onClick={() => handleToggleGrading(sub._id)}
-                                  disabled={actionLoading}
-                                  className={`p-2 rounded-lg transition-all ${sub.isGradeable ? "text-emerald-600 bg-emerald-50" : "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"}`}
-                                  title={
-                                    sub.isGradeable
-                                      ? "Baholash yopish"
-                                      : "Baholashga ruxsat berish"
-                                  }
-                                >
-                                  <CheckCircle size={18} />
-                                </button>
+                                <>
+                                  <button
+                                    onClick={() => handleToggleGrading(sub._id)}
+                                    disabled={
+                                      actionLoading ||
+                                      sub.status === "rejected" ||
+                                      sub.status === "graded"
+                                    }
+                                    className={`p-2 rounded-lg transition-all ${sub.isGradeable ? "text-emerald-600 bg-emerald-50" : "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"} ${sub.status === "rejected" || sub.status === "graded" ? "opacity-30 cursor-not-allowed" : ""}`}
+                                    title={
+                                      sub.isGradeable
+                                        ? "Baholash yopish"
+                                        : "Baholashga ruxsat berish"
+                                    }
+                                  >
+                                    <CheckCircle size={18} />
+                                  </button>
+
+                                  <button
+                                    onClick={() =>
+                                      handleRejectSubmission(sub._id)
+                                    }
+                                    disabled={
+                                      actionLoading ||
+                                      sub.status === "rejected" ||
+                                      sub.status === "graded"
+                                    }
+                                    className={`p-2 rounded-lg transition-all text-slate-400 hover:text-rose-600 hover:bg-rose-50 ${sub.status === "rejected" || sub.status === "graded" ? "opacity-30 cursor-not-allowed" : ""}`}
+                                    title="Yaroqsiz deb belgilash"
+                                  >
+                                    <XCircle size={18} />
+                                  </button>
+                                </>
                               )}
 
                               {/* Grading action for higher roles */}

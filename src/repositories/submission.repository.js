@@ -35,6 +35,11 @@ const submissionRepository = {
     const response = await api.delete(`/submissions/${id}`);
     return response.data;
   },
+  
+  rejectSubmission: async (id) => {
+    const response = await api.patch(`/submissions/${id}/reject`);
+    return response.data;
+  },
 };
 
 export default submissionRepository;

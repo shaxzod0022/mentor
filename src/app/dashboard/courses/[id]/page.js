@@ -18,6 +18,7 @@ import {
   Video,
   Upload,
   XCircle,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import courseService from "@/services/course.service";
@@ -79,6 +80,8 @@ export default function StudentCourseDetails() {
       };
     if (sub.status === "reviewed")
       return { label: "Ko'rib chiqilgan", color: "indigo", icon: ShieldCheck };
+    if (sub.status === "rejected")
+      return { label: "Yaroqsiz", color: "rose", icon: XCircle };
     return { label: "Topshirilgan", color: "amber", icon: Clock };
   };
 
@@ -184,6 +187,23 @@ export default function StudentCourseDetails() {
                               </a>
                             )}
                           </div>
+
+                          {submissions.find(
+                            (s) =>
+                              s.material?._id === material._id ||
+                              s.material === material._id,
+                          )?.status === "rejected" && (
+                            <div className="mt-3 p-3 bg-rose-50 border border-rose-100 rounded-2xl">
+                              <p className="text-[10px] font-black text-rose-600 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                <AlertCircle size={12} /> Mentor tomonidan
+                                yaroqsiz deb topildi
+                              </p>
+                              <p className="text-xs text-rose-500 font-medium leading-relaxed">
+                                Vazifangiz talablarga javob bermaydi. Iltimos,
+                                muddat yakunlanguncha qaytadan topshiring.
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -197,7 +217,9 @@ export default function StudentCourseDetails() {
                                 ? "bg-indigo-50 text-indigo-600 border-indigo-100"
                                 : status.color === "amber"
                                   ? "bg-amber-50 text-amber-600 border-amber-100"
-                                  : "bg-slate-100 text-slate-400 border-slate-200"
+                                  : status.color === "rose"
+                                    ? "bg-rose-50 text-rose-600 border-rose-100"
+                                    : "bg-slate-100 text-slate-400 border-slate-200"
                           }`}
                         >
                           <StatusIcon size={14} />
